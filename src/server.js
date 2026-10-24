@@ -1,3 +1,5 @@
+// Basiert auf unserem config/server.js (Express-Server starten).
+// Mit KI überarbeitet (KI-Log Nr. 6): Prüfung der Umgebungsvariablen beim Start, sauberes Herunterfahren bei Neustart durch Heroku.
 
 const REQUIRED_ENV = ['DATABASE_URL', 'JWT_SECRET', 'INTERNAL_API_TOKEN'];
 const SWEEP_INTERVAL_MS = 60 * 1000;
@@ -9,6 +11,7 @@ async function main() {
     process.exit(1);
   }
 
+  // Erst nach der Prüfung laden: db.js baut beim Laden sofort den Verbindungspool auf
   const { createApp } = require('./app');
   const pool = require('./config/db');
   const { releaseExpiredReservations } = require('./repositories/reservationRepository');
@@ -17,6 +20,7 @@ async function main() {
   const port = Number(process.env.PORT) || 3001;
   const server = app.listen(port, () => console.log(`[catalog] läuft auf Port ${port}`));
 
+  // Abgelaufene Reservierungen jede Minute freigeben (Kunde hat nicht bezahlt oder abgebrochen)
   const sweeper = setInterval(async () => {
     try {
       const released = await releaseExpiredReservations();
@@ -26,6 +30,7 @@ async function main() {
     }
   }, SWEEP_INTERVAL_MS);
 
+  // Heroku schickt beim Neustart SIGTERM: laufende Anfragen beenden, dann sauber herunterfahren
   let stopping = false;
   const shutdown = () => {
     if (stopping) return;

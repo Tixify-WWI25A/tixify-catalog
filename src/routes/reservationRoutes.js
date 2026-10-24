@@ -1,5 +1,5 @@
-// Mit KI erstellt nach unserem Handler-Muster (KI-Log Nr. 6): interne Routen für den orders-Service.
-const { buildRouter } = require('./buildRouter');
+// Mit KI erstellt nach unserem Handler-Muster (KI-Log Nr. 6): interne Routen für den orders-Service; Schleife aus unseren Routen-Dateien.
+const express = require('express');
 const { internal } = require('../middleware/auth');
 
 /**
@@ -13,4 +13,12 @@ const routes = [
   ['post', '/:id/release', 'ReleaseReservationHandler', internal]
 ];
 
-module.exports = { routes, router: buildRouter(routes) };
+const router = express.Router();
+
+routes.forEach(([method, path, handlerName, middlewares = []]) => {
+  const HandlerClass = require(`../handlers/${handlerName}`);
+  const handlerInstance = new HandlerClass();
+  router[method](path, ...middlewares, (req, res) => handlerInstance.execute(req, res));
+});
+
+module.exports = { routes, router };

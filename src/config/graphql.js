@@ -1,10 +1,16 @@
-
+// Basiert auf unserem config/graphql.js (GraphQL-Schema und Resolver für Events).
+// Mit KI überarbeitet (KI-Log Nr. 6): Autorisierung pro Resolver (F-02), gleiche Validierung und gleiches Repository wie REST, alle Operationen (lesen, anlegen, ändern, löschen).
 const { GraphQLError } = require('graphql');
 const events = require('../repositories/eventRepository');
 const { validateEvent, CATEGORIES } = require('../validation/eventValidation');
 const { HttpError } = require('../middleware/errorHandler');
 const { extractToken, verifyToken } = require('../middleware/auth');
 
+/**
+ * GraphQL bietet denselben Funktionsumfang wie die REST-API für Events:
+ * lesen (mit denselben Filtern), anlegen, ändern, löschen, Bestand setzen.
+ * Beide Schnittstellen nutzen dasselbe Repository und dieselbe Validierung.
+ */
 const typeDefs = `#graphql
   "Eine Veranstaltung mit Ticketkontingent"
   type Event {
@@ -88,6 +94,7 @@ function gqlError(status, message, details) {
   });
 }
 
+/** Übersetzt HttpError aus Validierung/Repository in GraphQL-Fehler mit passendem Code und HTTP-Status. */
 function wrap(fn) {
   return async (...args) => {
     try {
@@ -160,6 +167,7 @@ const resolvers = {
   }
 };
 
+/** Liest das Token; ungültig/fehlend bricht nicht ab, weil Queries öffentlich sind. */
 function buildContext(req) {
   const token = extractToken(req.headers.authorization);
   if (!token) return { user: null, authError: null };
@@ -170,6 +178,7 @@ function buildContext(req) {
   }
 }
 
+/** Express-Handler für POST /graphql; übernimmt den HTTP-Status aus den Resolvern (401/403/404 …). */
 function createGraphQLHandler(apollo) {
   return async (req, res) => {
     const response = await apollo.executeOperation(

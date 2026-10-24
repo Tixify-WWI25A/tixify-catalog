@@ -1,6 +1,14 @@
+// Basiert auf unserem SQL aus handlers/*Event*Handler.js (Abfragen auf die Tabelle events).
+// Mit KI überarbeitet (KI-Log Nr. 6): an einer Stelle gesammelt, Filter als Parameter (keine SQL-Injection), Änderung nur übergebener Felder.
 const pool = require('../config/db');
 const { HttpError } = require('../middleware/errorHandler');
 
+/**
+ * Einzige Stelle, an der SQL für Events steht. REST-Handler und GraphQL-Resolver
+ * nutzen beide dieses Modul – so verhalten sich beide Schnittstellen garantiert gleich.
+ */
+
+/** Wandelt eine DB-Zeile in das API-Format um (NUMERIC kommt aus pg als String). */
 function toEvent(row) {
   if (!row) return null;
   const num = (v) => (v === null || v === undefined ? null : Number(v));
@@ -20,11 +28,13 @@ function toEvent(row) {
   };
 }
 
+// Spalten, die per create/update geschrieben werden dürfen (Whitelist gegen SQL-Injection über Feldnamen)
 const WRITABLE = ['title', 'description', 'category', 'location', 'address', 'latitude', 'longitude', 'event_date', 'price', 'event_stock', 'logo_url'];
 
 async function listEvents({ search, location, categories, maxPrice, from } = {}) {
   const where = [];
   const params = [];
+  // Legt den Wert als Parameter ab und liefert seinen Platzhalter ($1, $2, …) – Werte nie direkt ins SQL
   const p = (value) => { params.push(value); return `$${params.length}`; };
 
   if (search) {
@@ -56,6 +66,10 @@ async function createEvent(fields) {
   return toEvent(rows[0]);
 }
 
+/**
+ * Ändert NUR die übergebenen Felder. (Das alte Backend setzte logo_url bei jedem Update
+ * auf NULL, wenn kein Bild mitgeschickt wurde.) Ein Feld explizit auf null setzen löscht es.
+ */
 async function updateEvent(id, fields) {
   const cols = WRITABLE.filter((c) => fields[c] !== undefined);
   if (cols.length === 0) return getEvent(id);
@@ -72,6 +86,10 @@ async function updateStock(id, stock) {
   return toEvent(rows[0]);
 }
 
+/**
+ * Löscht ein Event. Gab es dafür schon Reservierungen oder Tickets, wird das Löschen
+ * verweigert (409) – sonst gingen Buchungsdaten verloren. Solche Events später „absagen“ statt löschen.
+ */
 async function deleteEvent(id) {
   try {
     const { rowCount } = await pool.query('DELETE FROM events WHERE event_id = $1', [id]);

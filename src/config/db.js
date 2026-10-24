@@ -1,7 +1,17 @@
+// Basiert auf unserem config/db.js (pg-Pool mit DATABASE_URL, SSL für Heroku).
+// Mit KI überarbeitet (KI-Log Nr. 6): eigenes Schema pro Service über search_path, SSL nur außerhalb von localhost (lokale Tests, CI), Testverbindung beim Start entfernt.
 const { Pool } = require('pg');
 
+/**
+ * Verbindungspool zur Datenbank.
+ * search_path = catalog: Unqualifizierte Tabellennamen ("events") zeigen immer auf das
+ * Schema dieses Service. Andere Schemata (identity, orders) liegen bewusst NICHT im Pfad –
+ * der catalog-Service soll fremde Tabellen gar nicht erst finden.
+ */
+// Fehlt DATABASE_URL, bricht server.js schon beim Start mit einer klaren Meldung ab.
 const connectionString = process.env.DATABASE_URL || '';
 
+// Heroku Postgres erzwingt SSL mit einem Zertifikat, das Node nicht kennt; lokal (z. B. CI) ohne SSL.
 const useSsl = !/localhost|127\.0\.0\.1|host=\/|@\/|%2F/.test(connectionString) && process.env.PGSSL !== 'false';
 
 const pool = new Pool({

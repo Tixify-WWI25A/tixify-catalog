@@ -1,3 +1,9 @@
+// Mit KI erstellt (KI-Log Nr. 6), vom Team geprüft.
+/**
+ * Einheitliche Fehlerbehandlung. Früher baute jeder Handler seine Fehlerantwort selbst
+ * (mal { message }, mal { error }, mal 403 statt 401). Jetzt werfen Handler einen HttpError,
+ * und nur diese Datei macht daraus die Antwort: { error, details? }.
+ */
 class HttpError extends Error {
   constructor(status, message, details) {
     super(message);
@@ -6,16 +12,18 @@ class HttpError extends Error {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 function errorHandler(err, req, res, _next) {
   if (err instanceof HttpError) {
     const body = { error: err.message };
     if (err.details) body.details = err.details;
     return res.status(err.status).json(body);
   }
+  // Ungültiges JSON im Request-Body
   if (err.type === 'entity.parse.failed') {
     return res.status(400).json({ error: 'Ungültiges JSON im Request-Body.' });
   }
-  console.error(`[gateway] ${req.method} ${req.originalUrl} fehlgeschlagen:`, err);
+  console.error(`[catalog] ${req.method} ${req.originalUrl} fehlgeschlagen:`, err);
   return res.status(500).json({ error: 'Interner Serverfehler.' });
 }
 

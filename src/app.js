@@ -1,33 +1,25 @@
+// Basiert auf unserem app.js / config/server.js (Express-App, Routen mit app.use('/api/…') einhängen, GraphQL).
+// Mit KI überarbeitet (KI-Log Nr. 6): nur noch Events, Geocoding und Reservierungen; interne Routen für den orders-Service.
 const express = require('express');
 const helmet = require('helmet');
 const { ApolloServer } = require('@apollo/server');
-const { registerRoutes } = require('./http/registerRoutes');
-const { errorHandler, notFound } = require('./http/errors');
-const { requireAuth, requireAdmin, requireInternal } = require('./auth/auth');
-const ev = require('./handlers/eventHandlers');
-const rs = require('./handlers/reservationHandlers');
-const geo = require('./handlers/geocodeHandlers');
-const { typeDefs, resolvers, createGraphQLHandler } = require('./graphql/schema');
+const { errorHandler, notFound } = require('./middleware/errorHandler');
+const { typeDefs, resolvers, createGraphQLHandler } = require('./config/graphql');
+const eventRoutes = require('./routes/eventRoutes');
+const geocodeRoutes = require('./routes/geocodeRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
 
-const admin = [requireAuth, requireAdmin];
-const internal = [requireInternal];
-
-const publicRoutes = [
-  ['get', '/events', [], ev.listEvents],
-  ['get', '/events/:id', [], ev.getEvent],
-  ['post', '/events', admin, ev.createEvent],
-  ['patch', '/events/:id', admin, ev.updateEvent],
-  ['delete', '/events/:id', admin, ev.deleteEvent],
-  ['get', '/geocode', admin, geo.geocode]
+/**
+ * Alle Routen-Dateien und wo sie eingehängt werden – wie im ursprünglichen Backend (app.use('/api/…')).
+ * Wird auch von den Tests genutzt, die JEDE Route auf die richtigen Rechte prüfen.
+ */
+const mounted = [
+  ['/api/events',            eventRoutes],
+  ['/api/geocode',           geocodeRoutes],
+  ['/internal/reservations', reservationRoutes]
 ];
 
-const internalRoutes = [
-  ['post', '/reservations', internal, rs.createReservation],
-  ['get', '/reservations/:id', internal, rs.getReservation],
-  ['post', '/reservations/:id/confirm', internal, rs.confirmReservation],
-  ['post', '/reservations/:id/release', internal, rs.releaseReservation]
-];
-
+/** Baut die Express-App ohne sie zu starten – so können Tests sie direkt mit supertest aufrufen. */
 async function createApp() {
   const app = express();
   app.disable('x-powered-by');
@@ -36,8 +28,7 @@ async function createApp() {
 
   app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'catalog' }));
 
-  app.use('/api', registerRoutes(publicRoutes));
-  app.use('/internal', registerRoutes(internalRoutes));
+  for (const [path, routeFile] of mounted) app.use(path, routeFile.router);
 
   const apollo = new ApolloServer({
     typeDefs,
@@ -54,4 +45,4 @@ async function createApp() {
   return app;
 }
 
-module.exports = { createApp, publicRoutes, internalRoutes };
+module.exports = { createApp, mounted };

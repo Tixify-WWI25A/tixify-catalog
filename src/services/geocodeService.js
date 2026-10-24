@@ -1,21 +1,10 @@
-// Basiert auf unserem Geocode-Route in config/server.js (Nominatim-Abfrage mit Map als Zwischenspeicher).
-// Mit KI überarbeitet (KI-Log Nr. 6): Zeitlimit, Zwischenspeicher mit Ablaufzeit und Obergrenze, Fehlerbehandlung.
 const { HttpError } = require('../middleware/errorHandler');
 
-/**
- * Adresssuche über Nominatim (OpenStreetMap) mit Zwischenspeicher.
- *
- * Warum ein Cache: Nominatim erlaubt höchstens 1 Anfrage pro Sekunde. Beim Tippen im Admin-Formular
- * entstehen viele gleiche Anfragen – aus dem Cache kommen sie sofort und belasten Nominatim nicht.
- * Der Cache ist begrenzt (MAX_ENTRIES, älteste fliegen zuerst raus) – der alte Cache im Monolithen
- * konnte unbegrenzt wachsen und legte pro Eintrag einen eigenen Timer an.
- */
-
-const TTL_MS = 60 * 60 * 1000; // 1 Stunde
+const TTL_MS = 60 * 60 * 1000;
 const MAX_ENTRIES = 500;
 const TIMEOUT_MS = 5000;
 
-const cache = new Map(); // Map behält die Einfügereihenfolge → ältester Eintrag ist der erste
+const cache = new Map(); 
 
 function getCached(key) {
   const hit = cache.get(key);
@@ -48,8 +37,7 @@ async function searchAddress(query, fetchImpl = fetch) {
       `https://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=de,at,ch&q=${encodeURIComponent(q)}`,
       {
         headers: {
-          // Nominatim verlangt einen eindeutigen User-Agent mit echter Kontaktadresse
-          'User-Agent': `TixifyCatalog/1.0 (${process.env.NOMINATIM_CONTACT || 'contact-not-configured'})`
+            'User-Agent': `TixifyCatalog/1.0 (${process.env.NOMINATIM_CONTACT || 'contact-not-configured'})`
         },
         signal: AbortSignal.timeout(TIMEOUT_MS)
       }
@@ -63,8 +51,7 @@ async function searchAddress(query, fetchImpl = fetch) {
   if (!response.ok) throw new HttpError(502, 'Die Adresssuche hat einen Fehler gemeldet.');
 
   const raw = await response.json();
-  // Nur die Felder weitergeben, die das Frontend braucht
-  const results = (Array.isArray(raw) ? raw : []).map((r) => ({
+    const results = (Array.isArray(raw) ? raw : []).map((r) => ({
     display_name: r.display_name,
     lat: r.lat,
     lon: r.lon
