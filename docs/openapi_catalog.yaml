@@ -12,8 +12,8 @@ info:
     - GraphQL unter `POST /graphql` bietet denselben Funktionsumfang für Events.
 
 servers:
-  - url: https://tixify-catalog.herokuapp.com
-    description: Produktion (Heroku-App tixify-catalog; genaue URL siehe Heroku-Dashboard)
+  - url: https://tixify-catalog-68563fdc98fc.herokuapp.com
+    description: Produktion (Heroku-App tixify-catalog; vom Frontend nur über das gateway aufgerufen)
   - url: http://localhost:3001
     description: lokal
 
