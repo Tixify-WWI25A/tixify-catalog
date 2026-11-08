@@ -1,4 +1,4 @@
-// Mit KI erstellt (KI-Log Nr. 6), vom Team geprüft.
+// Mit KI erstellt (KI-Log Nr. 31), vom Team geprüft.
 const fs = require('fs');
 const path = require('path');
 const { Pool } = require('pg');

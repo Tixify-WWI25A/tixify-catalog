@@ -1,5 +1,5 @@
 // Basiert auf unserem config/server.js (Express-Server starten).
-// Mit KI überarbeitet (KI-Log Nr. 6): Prüfung der Umgebungsvariablen beim Start, sauberes Herunterfahren bei Neustart durch Heroku.
+// Mit KI überarbeitet (KI-Log Nr. 31): Prüfung der Umgebungsvariablen beim Start, sauberes Herunterfahren bei Neustart durch Heroku.
 
 const REQUIRED_ENV = ['DATABASE_URL', 'JWT_SECRET', 'INTERNAL_API_TOKEN'];
 const SWEEP_INTERVAL_MS = 60 * 1000;

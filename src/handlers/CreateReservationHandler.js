@@ -1,4 +1,4 @@
-// Mit KI erstellt nach unserem Handler-Muster (KI-Log Nr. 6): Tickets für den orders-Service reservieren.
+// Mit KI erstellt nach unserem Handler-Muster (KI-Log Nr. 31): Tickets für den orders-Service reservieren.
 const reservations = require('../repositories/reservationRepository');
 const { validateReservationItems } = require('../validation/eventValidation');
 const { HttpError } = require('../middleware/errorHandler');

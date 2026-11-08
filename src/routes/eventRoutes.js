@@ -1,5 +1,5 @@
 // Basiert auf unserem routes/eventRoutes.js (Routen-Tabelle mit checkLogin und requireAdmin).
-// Schleife: unser System; übergibt jetzt die Middlewares (Fehler F-01 behoben, KI-Log Nr. 6).
+// Schleife: unser System; übergibt jetzt die Middlewares (Fehler F-01 behoben, KI-Log Nr. 31).
 const express = require('express');
 const { admin } = require('../middleware/auth');
 

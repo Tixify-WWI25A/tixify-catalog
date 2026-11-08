@@ -1,4 +1,4 @@
-// Mit KI erstellt (KI-Log Nr. 6), vom Team geprüft.
+// Mit KI erstellt (KI-Log Nr. 31), vom Team geprüft.
 const request = require('supertest');
 const { describeWithDb, resetSchema, insertEvent, bearer } = require('./helpers/testDb');
 

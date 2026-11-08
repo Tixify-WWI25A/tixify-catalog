@@ -1,5 +1,5 @@
 // Basiert auf unserem handlers/CreateEventHandler.js (Event anlegen).
-// Mit KI überarbeitet (KI-Log Nr. 6): vollständige Validierung inkl. Kategorie und Koordinaten, SQL ins Repository.
+// Mit KI überarbeitet (KI-Log Nr. 31): vollständige Validierung inkl. Kategorie und Koordinaten, SQL ins Repository.
 const events = require('../repositories/eventRepository');
 const { validateEvent } = require('../validation/eventValidation');
 

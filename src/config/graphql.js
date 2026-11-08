@@ -1,5 +1,5 @@
 // Basiert auf unserem config/graphql.js (GraphQL-Schema und Resolver für Events).
-// Mit KI überarbeitet (KI-Log Nr. 6): Autorisierung pro Resolver (F-02), gleiche Validierung und gleiches Repository wie REST, alle Operationen (lesen, anlegen, ändern, löschen).
+// Mit KI überarbeitet (KI-Log Nr. 31): Autorisierung pro Resolver (F-02), gleiche Validierung und gleiches Repository wie REST, alle Operationen (lesen, anlegen, ändern, löschen).
 const { GraphQLError } = require('graphql');
 const events = require('../repositories/eventRepository');
 const { validateEvent, CATEGORIES } = require('../validation/eventValidation');

@@ -1,5 +1,5 @@
 // Basiert auf unserem handlers/UpdateEventHandler.js (Event ändern).
-// Mit KI überarbeitet (KI-Log Nr. 6): ändert nur übergebene Felder (F-07), Validierung, SQL ins Repository.
+// Mit KI überarbeitet (KI-Log Nr. 31): ändert nur übergebene Felder (F-07), Validierung, SQL ins Repository.
 const events = require('../repositories/eventRepository');
 const { validateEvent, parseEventId } = require('../validation/eventValidation');
 const { HttpError } = require('../middleware/errorHandler');

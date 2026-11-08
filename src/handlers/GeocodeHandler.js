@@ -1,5 +1,5 @@
 // Basiert auf unserem Geocode-Route in config/server.js (Adresssuche über Nominatim).
-// Mit KI überarbeitet (KI-Log Nr. 6): eigener Handler, nur für Admins.
+// Mit KI überarbeitet (KI-Log Nr. 31): eigener Handler, nur für Admins.
 const { searchAddress } = require('../services/geocodeService');
 
 /**

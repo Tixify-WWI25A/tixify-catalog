@@ -1,4 +1,4 @@
-// Mit KI erstellt (KI-Log Nr. 6), vom Team geprüft. Regeln aus unseren Event-Handlern zusammengeführt und erweitert.
+// Mit KI erstellt (KI-Log Nr. 31), vom Team geprüft. Regeln aus unseren Event-Handlern zusammengeführt und erweitert.
 const { HttpError } = require('../middleware/errorHandler');
 
 const CATEGORIES = ['Konzerte', 'Festivals', 'Sport', 'Theater', 'Comedy'];

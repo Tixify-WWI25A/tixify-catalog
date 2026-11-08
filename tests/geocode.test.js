@@ -1,4 +1,4 @@
-// Mit KI erstellt (KI-Log Nr. 6), vom Team geprüft.
+// Mit KI erstellt (KI-Log Nr. 31), vom Team geprüft.
 const { searchAddress, clearCache, MAX_ENTRIES } = require('../src/services/geocodeService');
 const { HttpError } = require('../src/middleware/errorHandler');
 

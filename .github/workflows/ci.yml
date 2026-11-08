@@ -1,4 +1,4 @@
-# Mit KI erstellt (KI-Log Nr. 6), vom Team geprüft.
+# Mit KI erstellt (KI-Log Nr. 31), vom Team geprüft.
 name: CI
 
 # Läuft bei jedem Push und jedem Pull Request: alle Tests gegen eine echte PostgreSQL-Datenbank.

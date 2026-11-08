@@ -1,3 +1,4 @@
+// Mit KI-Unterstützung (Gemini) entwickelt (KI-Log Nr. 18): Route für die Adresssuche (nur Admins), vom Team geprüft.
 const express = require('express');
 const { admin } = require('../middleware/auth');
 

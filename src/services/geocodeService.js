@@ -1,3 +1,4 @@
+// Mit KI-Unterstützung (Gemini) entwickelt (KI-Log Nr. 18): Adresssuche über OpenStreetMap/Nominatim mit Zwischenspeicher, vom Team geprüft.
 const { HttpError } = require('../middleware/errorHandler');
 
 const TTL_MS = 60 * 60 * 1000;

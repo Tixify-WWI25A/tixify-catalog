@@ -1,4 +1,4 @@
-// Mit KI erstellt (KI-Log Nr. 6), vom Team geprüft.
+// Mit KI erstellt (KI-Log Nr. 31), vom Team geprüft.
 const { validateEvent, validateReservationItems } = require('../src/validation/eventValidation');
 const { HttpError } = require('../src/middleware/errorHandler');
 

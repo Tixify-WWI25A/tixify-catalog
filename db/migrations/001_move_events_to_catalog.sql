@@ -1,4 +1,4 @@
--- Mit KI erstellt (KI-Log Nr. 6), vom Team geprüft.
+-- Mit KI erstellt (KI-Log Nr. 31), vom Team geprüft.
 -- Migration 001: Event-Tabelle aus dem gemeinsamen "public"-Schema in das Schema "catalog" verschieben
 --
 -- VORHER (Owner der Heroku-App):

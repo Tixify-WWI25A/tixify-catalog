@@ -1,5 +1,5 @@
 // Basiert auf unserem SQL aus handlers/*Event*Handler.js (Abfragen auf die Tabelle events).
-// Mit KI überarbeitet (KI-Log Nr. 6): an einer Stelle gesammelt, Filter als Parameter (keine SQL-Injection), Änderung nur übergebener Felder.
+// Mit KI überarbeitet (KI-Log Nr. 31): an einer Stelle gesammelt, Filter als Parameter (keine SQL-Injection), Änderung nur übergebener Felder.
 const pool = require('../config/db');
 const { HttpError } = require('../middleware/errorHandler');
 

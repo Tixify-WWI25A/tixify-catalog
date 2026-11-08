@@ -1,4 +1,4 @@
-// Mit KI erstellt nach unserem Handler-Muster (KI-Log Nr. 6).
+// Mit KI erstellt nach unserem Handler-Muster (KI-Log Nr. 31).
 const reservations = require('../repositories/reservationRepository');
 const { parseReservationId } = require('../validation/eventValidation');
 

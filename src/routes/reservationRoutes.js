@@ -1,4 +1,4 @@
-// Mit KI erstellt nach unserem Handler-Muster (KI-Log Nr. 6): interne Routen für den orders-Service; Schleife aus unseren Routen-Dateien.
+// Mit KI erstellt nach unserem Handler-Muster (KI-Log Nr. 31): interne Routen für den orders-Service; Schleife aus unseren Routen-Dateien.
 const express = require('express');
 const { internal } = require('../middleware/auth');
 

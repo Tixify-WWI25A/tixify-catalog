@@ -1,5 +1,5 @@
 // Basiert auf unserem handlers/GetEventsHandler.js (Eventliste für alle).
-// Mit KI überarbeitet (KI-Log Nr. 6): Filter (Suche, Ort, Kategorie, Preis, Datum) mit Prüfung, SQL ins Repository.
+// Mit KI überarbeitet (KI-Log Nr. 31): Filter (Suche, Ort, Kategorie, Preis, Datum) mit Prüfung, SQL ins Repository.
 const events = require('../repositories/eventRepository');
 const { parseEventFilter } = require('../validation/eventValidation');
 

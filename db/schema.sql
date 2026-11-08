@@ -1,4 +1,4 @@
--- Mit KI erstellt (KI-Log Nr. 6), vom Team geprüft.
+-- Mit KI erstellt (KI-Log Nr. 31), vom Team geprüft.
 -- Tixify catalog-Service: vollständiges Schema
 -- Baut den Datenbereich des catalog-Service von Grund auf (z. B. lokal oder in der CI).
 -- Für die bestehende Heroku-Datenbank stattdessen db/migrations/001_move_events_to_catalog.sql ausführen.

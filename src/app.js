@@ -1,5 +1,5 @@
 // Basiert auf unserem app.js / config/server.js (Express-App, Routen mit app.use('/api/…') einhängen, GraphQL).
-// Mit KI überarbeitet (KI-Log Nr. 6): nur noch Events, Geocoding und Reservierungen; interne Routen für den orders-Service.
+// Mit KI überarbeitet (KI-Log Nr. 31): nur noch Events, Geocoding und Reservierungen; interne Routen für den orders-Service.
 const express = require('express');
 const helmet = require('helmet');
 const { ApolloServer } = require('@apollo/server');
