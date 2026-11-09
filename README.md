@@ -2,11 +2,13 @@
 
 Verwaltet die **Events und Ticketkontingente** von Tixify, stellt sie per **REST und GraphQL** bereit und **reserviert Tickets** für den Checkout, damit nichts doppelt verkauft wird.
 
+Live: https://tixify-catalog-68563fdc98fc.herokuapp.com/health
+
 Teil der Tixify-Architektur aus drei Backend-Services:
 
 | Repo | Aufgabe | Heroku-App |
 |---|---|---|
-| tixify-gateway | Eingangstür, Login, Benutzer | `tixify` |
+| Tixify_backend (gateway) | Eingangstür, Login, Benutzer | `tixify` |
 | **tixify-catalog** | **Events, GraphQL, Reservierungen, Adresssuche** | `tixify-catalog` |
 | tixify-orders | Warenkorb, PayPal, Bestellungen, Mails | `tixify-orders` |
 
@@ -55,7 +57,7 @@ src/
   routes/eventRoutes.js        /api/events          → Get/Create/Update/DeleteEvent…Handler
   routes/geocodeRoutes.js      /api/geocode         → GeocodeHandler
   routes/reservationRoutes.js  /internal/reservations → …ReservationHandler (nur für orders)
-  routes/buildRouter.js        baut aus einer Routen-Tabelle den Router
+  routes/*Routes.js            Routen-Tabelle + eigene Schleife (übergibt die Middlewares)
   handlers/                    ein Handler pro Anwendungsfall, z. B. CreateEventHandler.js
   repositories/                einzige Stelle mit SQL
   validation/                  Eingaberegeln (von REST und GraphQL gemeinsam genutzt)
@@ -69,7 +71,7 @@ docs/openapi.yaml              API-Beschreibung (API-first)
 Neu gegenüber dem ursprünglichen Backend:
 - **`repositories/`**: SQL steht an einer Stelle statt in jedem Handler.
 - **`middleware/errorHandler.js`**: Handler werfen `HttpError`, die Antwort hat immer das Format `{ error, details? }`.
-- **`routes/buildRouter.js`**: die Schleife über die Routen-Tabelle gibt es nur noch einmal – sie übergibt die Middlewares
+- **Routen-Schleife** (in jeder `routes/*Routes.js`): übergibt die Middlewares
   wirklich (im alten `eventRoutes.js` fehlte das, Admin-Routen waren ohne Login erreichbar).
 - `config/auth.js` und `config/requireAdmin.js` heißen jetzt `middleware/auth.js` (`checkLogin`, `requireAdmin`, `requireInternal`).
 
